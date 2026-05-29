@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: vn-news-mcp
+Version: 0.1.0
+Summary: Vietnam news crawler to SQLite + MCP server + dashboard
+Requires-Python: >=3.11
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: fastmcp>=0.0.5
+Requires-Dist: tenacity>=8.2.3
+Requires-Dist: beautifulsoup4>=4.12.0
+Requires-Dist: lxml>=5.1.0
+Requires-Dist: trafilatura>=1.7.0
+Requires-Dist: readability-lxml>=0.8.1
+Requires-Dist: python-dateutil>=2.9.0
+Requires-Dist: dateparser>=1.2.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: typer>=0.12.0
+Requires-Dist: rich>=13.7.0
+Provides-Extra: dashboard
+Requires-Dist: streamlit>=1.34.0; extra == "dashboard"
+Requires-Dist: pandas>=2.2.0; extra == "dashboard"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"
+Requires-Dist: ruff>=0.6.0; extra == "dev"
+Provides-Extra: playwright
+Requires-Dist: playwright>=1.44.0; extra == "playwright"

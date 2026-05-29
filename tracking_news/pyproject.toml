@@ -1,0 +1,53 @@
+
+[project]
+name = "vn-news-mcp"
+version = "0.1.0"
+description = "Vietnam news crawler to SQLite + MCP server + dashboard"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx>=0.27.0",
+  "aiohttp>=3.9.0",
+  "fastmcp>=0.0.5",
+  "tenacity>=8.2.3",
+  "beautifulsoup4>=4.12.0",
+  "lxml>=5.1.0",
+  "trafilatura>=1.7.0",
+  "readability-lxml>=0.8.1",
+  "python-dateutil>=2.9.0",
+  "dateparser>=1.2.0",
+  "pydantic>=2.7.0",
+  "typer>=0.12.0",
+  "rich>=13.7.0",
+]
+
+[tool.setuptools]
+packages = ["app"]
+
+[project.optional-dependencies]
+dashboard = [
+  "streamlit>=1.34.0",
+  "pandas>=2.2.0",
+]
+dev = [
+  "pytest>=8.2.0",
+  "pytest-asyncio>=0.23.0",
+  "ruff>=0.6.0",
+]
+playwright = [
+  "playwright>=1.44.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

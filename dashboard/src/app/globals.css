@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-header: #FFFFFF;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-header: #000000;
+  --accent-green: #10A37F;
+  --accent-red: #EF4444;
+  --accent-gold: #FAAD14;
+  --accent-coral: #FF6B35;
+  --accent-lilac: #8B5CF6;
+  --border: #000000;
+  --border-light: #D0D0D0;
+  --surface-tint: #F5F5F5;
+  --surface-warm: #F9F9F9;
+}
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-header: var(--bg-header);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-header: var(--text-header);
+  --color-accent-green: var(--accent-green);
+  --color-accent-red: var(--accent-red);
+  --color-accent-gold: var(--accent-gold);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+main {
+  width: 100%;
+}
+
+.pixel-border {
+  border: 2px solid var(--border);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.96);
+}
+
+.pixel-shadow {
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.96);
+}
+
+.navbar {
+  background: var(--bg-header);
+  color: var(--text-header);
+  border-bottom: 2px solid var(--border);
+}
+
+.footer {
+  border-top: 2px solid var(--border);
+}
+
+button,
+select,
+input,
+a {
+  border-radius: 0;
+}
+
+button,
+select,
+input {
+  font-family: var(--font-jetbrains), monospace;
+}
+
+.playback-range {
+  height: 10px;
+  border: 2px solid var(--border);
+  background-color: var(--border-light);
+}
+
+.playback-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--accent-gold);
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.96);
+  cursor: pointer;
+}
+
+.playback-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--accent-gold);
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.96);
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-gold);
+}
+
+input[type="range"] {
+  accent-color: var(--accent-gold);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background: var(--bg-card);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-left: 2px solid var(--border-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888888;
+  border: 1px solid var(--border-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+div[class*="tv-logo"],
+div[class^="tv-logo"],
+div[style*="pointer-events: none"] > a,
+div[id^="tv-attr-logo"],
+a[href*="tradingview.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}

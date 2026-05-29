@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "vn-news-mcp": {
+      "type": "stdio",
+      "command": "${PYTHON:-python}",
+      "args": ["-m", "app.mcp_server"],
+      "env": {
+        "NEWS_DB_PATH": "${NEWS_DB_PATH:-./data/news.db}"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+
+# --- 1. Core Deep Learning (CUDA 11.8) ---
+# Pin CUDA wheels explicitly so Docker/Linux environments get GPU-enabled PyTorch instead of CPU-only builds.
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.6.0+cu118
+torchvision==0.21.0+cu118
+torchaudio==2.6.0+cu118
+
+# --- 2. AI & Agentic Frameworks (SOTA) ---
+openai>=1.0.0               # Call LLMs (Qwen3 / Gemini via proxy)
+pyautogen                   # Multi-agent framework (Legacy Workflows)
+pydantic>=2.0.0             # Governance Schema & Validation (Cognitive Trading)
+tiktoken                    # Cấu trúc Tokenizer
+transformers                # Huggingface Transformers
+sentence-transformers       # Text Embeddings cho RAG / Memory Vector
+faiss-cpu                   # Vector DB (Chuyển sang CPU để chạy ổn định hơn trên mọi máy)
+lightrag-hku                # Financial RAG Engine
+
+# --- 3. Quantitative Finance & Portfolio ---
+vnstock3                    # Vietnam Stock Market Data API cốt lõi
+yfinance                    # Global Market Data
+pandas>=2.0.0               # Xử lý ma trận dữ liệu
+numpy>=1.24.0               # Tính toán đại số tuyến tính
+scipy                       # Tính toán khoa học, thống kê
+cvxpy                       # Tối ưu hóa lồi cho Markowitz Portfolio
+scikit-learn                # Phân cụm (Clustering) & Machine Learning
+
+# --- 4. Database & Storage ---
+SQLAlchemy                  # Quản lý SQLite (tracking_news, memory)
+
+# --- 5. Data Extraction & Web Scraping ---
+newspaper3k                 # Trích xuất nội dung báo cáo tài chính
+beautifulsoup4              # Bóc tách HTML
+lxml                        # Engine parsing cực nhanh cho BeautifulSoup
+requests>=2.31.0            # Gọi HTTP (Fix lỗi version)
+aiohttp                     # Bất đồng bộ HTTP (Xử lý hàng loạt LLM calls)
+urllib3<2.0                 # Hạ version urllib3 xuống dưới 2.0 để sửa triệt để lỗi RequestsDependencyWarning
+charset-normalizer<4.0
+
+# --- 6. Analytics, Web UI & Utils ---
+streamlit                   # Framework tạo UI Dashboard (Tùy chọn)
+plotly                      # Vẽ biểu đồ tương tác (Interactive Charts)
+jinja2                      # Engine Template cho HTML/Markdown
+python-dotenv               # Quản lý các biến môi trường (.env)
+pandas-ta
