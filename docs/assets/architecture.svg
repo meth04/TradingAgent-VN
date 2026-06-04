@@ -1,0 +1,66 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">TradingAgent-VN architecture</title>
+  <desc id="desc">System architecture from data ingestion to agents, RAG, backtesting, APIs and dashboards.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F4F7FB"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2 2 L10 6 L2 10 Z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="760" rx="30" fill="#0B1220"/>
+  <text x="640" y="64" text-anchor="middle" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial" font-size="38" font-weight="900">TradingAgent-VN Architecture</text>
+  <text x="640" y="102" text-anchor="middle" fill="#93A4B7" font-family="Inter, Segoe UI, Arial" font-size="18">Vietnam stock data → RAG → specialist agents → CIO → backtest and dashboards</text>
+
+  <g font-family="Inter, Segoe UI, Arial">
+    <rect x="64" y="168" width="260" height="170" rx="24" fill="url(#panel)"/>
+    <text x="94" y="210" fill="#0F172A" font-size="23" font-weight="850">1. Data Sources</text>
+    <text x="94" y="250" fill="#475569" font-size="17">• vnstock3 OHLCV</text>
+    <text x="94" y="280" fill="#475569" font-size="17">• CafeF / Vietnamese news</text>
+    <text x="94" y="310" fill="#475569" font-size="17">• Financial report PDFs</text>
+
+    <rect x="64" y="412" width="260" height="170" rx="24" fill="url(#panel)"/>
+    <text x="94" y="454" fill="#0F172A" font-size="23" font-weight="850">2. Local Storage</text>
+    <text x="94" y="494" fill="#475569" font-size="17">• data/vnstock.db</text>
+    <text x="94" y="524" fill="#475569" font-size="17">• data/news.db</text>
+    <text x="94" y="554" fill="#475569" font-size="17">• vnstock/rag_storage</text>
+
+    <rect x="430" y="168" width="420" height="414" rx="28" fill="#F8FAFC"/>
+    <text x="640" y="214" text-anchor="middle" fill="#0F172A" font-size="26" font-weight="900">Core Intelligence Layer</text>
+    <rect x="468" y="250" width="166" height="64" rx="18" fill="#ECFDF5" stroke="#10A37F"/>
+    <text x="551" y="289" text-anchor="middle" fill="#065F46" font-size="17" font-weight="800">Macro Agent</text>
+    <rect x="646" y="250" width="166" height="64" rx="18" fill="#EFF6FF" stroke="#3B82F6"/>
+    <text x="729" y="289" text-anchor="middle" fill="#1D4ED8" font-size="17" font-weight="800">Technical</text>
+    <rect x="468" y="330" width="166" height="64" rx="18" fill="#FEF3C7" stroke="#F59E0B"/>
+    <text x="551" y="369" text-anchor="middle" fill="#92400E" font-size="17" font-weight="800">Quant Agent</text>
+    <rect x="646" y="330" width="166" height="64" rx="18" fill="#FFF1F2" stroke="#F43F5E"/>
+    <text x="729" y="369" text-anchor="middle" fill="#BE123C" font-size="17" font-weight="800">News Agent</text>
+    <rect x="468" y="410" width="344" height="64" rx="18" fill="#F5F3FF" stroke="#8B5CF6"/>
+    <text x="640" y="449" text-anchor="middle" fill="#5B21B6" font-size="17" font-weight="800">Financial Agent + LightRAG</text>
+    <rect x="520" y="500" width="240" height="54" rx="17" fill="#111827"/>
+    <text x="640" y="534" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="900">CIO Decision Layer</text>
+
+    <rect x="956" y="168" width="260" height="170" rx="24" fill="url(#panel)"/>
+    <text x="986" y="210" fill="#0F172A" font-size="23" font-weight="850">3. Interfaces</text>
+    <text x="986" y="250" fill="#475569" font-size="17">• FastAPI backend</text>
+    <text x="986" y="280" fill="#475569" font-size="17">• Next.js app</text>
+    <text x="986" y="310" fill="#475569" font-size="17">• Streamlit RAG UI</text>
+
+    <rect x="956" y="412" width="260" height="170" rx="24" fill="url(#panel)"/>
+    <text x="986" y="454" fill="#0F172A" font-size="23" font-weight="850">4. Outputs</text>
+    <text x="986" y="494" fill="#475569" font-size="17">• Markdown reports</text>
+    <text x="986" y="524" fill="#475569" font-size="17">• Backtest ledgers</text>
+    <text x="986" y="554" fill="#475569" font-size="17">• Research dashboard</text>
+  </g>
+
+  <path d="M324 252 H418" stroke="#CBD5E1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M324 498 H418" stroke="#CBD5E1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M850 252 H944" stroke="#CBD5E1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M850 498 H944" stroke="#CBD5E1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M194 338 V400" stroke="#CBD5E1" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="210" y="655" width="860" height="54" rx="18" fill="#111827" stroke="#334155"/>
+  <text x="640" y="689" text-anchor="middle" fill="#D9EAF7" font-family="Inter, Segoe UI, Arial" font-size="18">CLI: crawl-vnstock · crawl-news · sync · rag index/query · analyze · backtest · backtest-cognitive</text>
+</svg>

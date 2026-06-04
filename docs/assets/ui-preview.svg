@@ -1,0 +1,55 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">TradingAgent-VN UI preview</title>
+  <desc id="desc">Illustration of the Next.js stock analyzer interface and backtest dashboard.</desc>
+  <rect width="1280" height="760" rx="30" fill="#F2F4F7"/>
+  <rect x="70" y="78" width="1140" height="604" rx="30" fill="#FFFFFF" stroke="#111827" stroke-width="4"/>
+  <rect x="70" y="78" width="1140" height="64" rx="30" fill="#111827"/>
+  <circle cx="112" cy="111" r="10" fill="#EF4444"/>
+  <circle cx="146" cy="111" r="10" fill="#F59E0B"/>
+  <circle cx="180" cy="111" r="10" fill="#10B981"/>
+  <text x="640" y="119" text-anchor="middle" fill="#E5E7EB" font-family="Inter, Segoe UI, Arial" font-size="18" font-weight="800">localhost:3001 · Stock Analyzer</text>
+
+  <rect x="104" y="176" width="280" height="460" rx="24" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <text x="132" y="220" fill="#111827" font-family="Inter, Segoe UI, Arial" font-size="24" font-weight="900">Controls</text>
+  <text x="132" y="260" fill="#6B7280" font-family="Inter, Segoe UI, Arial" font-size="14" font-weight="700">TICKERS</text>
+  <g font-family="Inter, Segoe UI, Arial" font-size="16" font-weight="800">
+    <rect x="132" y="280" width="64" height="40" rx="12" fill="#111827"/><text x="164" y="306" text-anchor="middle" fill="#FFFFFF">FPT</text>
+    <rect x="208" y="280" width="64" height="40" rx="12" fill="#FFFFFF" stroke="#D1D5DB"/><text x="240" y="306" text-anchor="middle" fill="#111827">VCB</text>
+    <rect x="284" y="280" width="64" height="40" rx="12" fill="#FFFFFF" stroke="#D1D5DB"/><text x="316" y="306" text-anchor="middle" fill="#111827">HPG</text>
+  </g>
+  <text x="132" y="368" fill="#6B7280" font-family="Inter, Segoe UI, Arial" font-size="14" font-weight="700">WORKFLOW</text>
+  <rect x="132" y="388" width="216" height="48" rx="14" fill="#ECFDF5" stroke="#10A37F"/>
+  <text x="240" y="419" text-anchor="middle" fill="#047857" font-family="Inter, Segoe UI, Arial" font-size="16" font-weight="900">Cognitive Swarm</text>
+  <rect x="132" y="520" width="216" height="54" rx="16" fill="#FAAD14"/>
+  <text x="240" y="554" text-anchor="middle" fill="#111827" font-family="Inter, Segoe UI, Arial" font-size="18" font-weight="900">Phân tích</text>
+
+  <rect x="420" y="176" width="756" height="144" rx="24" fill="#111827"/>
+  <text x="456" y="225" fill="#FAAD14" font-family="Inter, Segoe UI, Arial" font-size="16" font-weight="850">MULTI-AGENT · VN30</text>
+  <text x="456" y="270" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial" font-size="44" font-weight="950">Stock Analyzer</text>
+  <text x="456" y="300" fill="#BFC9D5" font-family="Inter, Segoe UI, Arial" font-size="17">Macro · Technical · Quant · News · Financial → CIO report</text>
+
+  <g font-family="Inter, Segoe UI, Arial">
+    <rect x="420" y="350" width="232" height="128" rx="22" fill="#ECFDF5" stroke="#10A37F"/>
+    <text x="450" y="392" fill="#065F46" font-size="20" font-weight="900">Macro Agent</text>
+    <rect x="450" y="418" width="158" height="10" rx="5" fill="#A7F3D0"/>
+    <rect x="450" y="442" width="120" height="10" rx="5" fill="#A7F3D0"/>
+
+    <rect x="682" y="350" width="232" height="128" rx="22" fill="#EFF6FF" stroke="#3B82F6"/>
+    <text x="712" y="392" fill="#1D4ED8" font-size="20" font-weight="900">Technical</text>
+    <path d="M720 446 L760 420 L806 438 L858 396" stroke="#1D4ED8" stroke-width="7" stroke-linecap="round"/>
+
+    <rect x="944" y="350" width="232" height="128" rx="22" fill="#FFF7ED" stroke="#F97316"/>
+    <text x="974" y="392" fill="#C2410C" font-size="20" font-weight="900">Quant Agent</text>
+    <rect x="974" y="420" width="34" height="36" rx="7" fill="#FDBA74"/>
+    <rect x="1018" y="402" width="34" height="54" rx="7" fill="#FB923C"/>
+    <rect x="1062" y="374" width="34" height="82" rx="7" fill="#F97316"/>
+
+    <rect x="420" y="506" width="364" height="130" rx="22" fill="#F5F3FF" stroke="#8B5CF6"/>
+    <text x="450" y="548" fill="#5B21B6" font-size="20" font-weight="900">Financial RAG</text>
+    <text x="450" y="586" fill="#6D28D9" font-size="16">Reads financial reports and explains fundamentals.</text>
+
+    <rect x="812" y="506" width="364" height="130" rx="22" fill="#111827"/>
+    <text x="842" y="548" fill="#FFFFFF" font-size="20" font-weight="900">CIO Summary</text>
+    <text x="842" y="586" fill="#CBD5E1" font-size="16">Final portfolio decision and Markdown report.</text>
+  </g>
+</svg>

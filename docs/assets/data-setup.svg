@@ -1,0 +1,40 @@
+<svg width="1280" height="520" viewBox="0 0 1280 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Data setup workflow</title>
+  <desc id="desc">A four step workflow showing how users clone the repository, install dependencies, add data and run the app.</desc>
+  <rect width="1280" height="520" rx="30" fill="#FEFBF3"/>
+  <text x="640" y="70" text-anchor="middle" fill="#111827" font-family="Inter, Segoe UI, Arial" font-size="38" font-weight="950">Clone → Install → Add Data → Run</text>
+  <text x="640" y="106" text-anchor="middle" fill="#64748B" font-family="Inter, Segoe UI, Arial" font-size="18">Bootstrap a reproducible Vietnamese stock AI research workspace from GitHub.</text>
+
+  <g font-family="Inter, Segoe UI, Arial">
+    <rect x="80" y="170" width="238" height="220" rx="26" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
+    <circle cx="122" cy="214" r="24" fill="#111827"/><text x="122" y="222" text-anchor="middle" fill="#FFFFFF" font-size="22" font-weight="900">1</text>
+    <text x="150" y="222" fill="#111827" font-size="24" font-weight="900">Clone repo</text>
+    <text x="110" y="270" fill="#475569" font-size="16">git clone &amp;&amp; cd</text>
+    <rect x="110" y="304" width="178" height="42" rx="12" fill="#F1F5F9"/><text x="199" y="331" text-anchor="middle" fill="#0F172A" font-size="15" font-weight="800">TradingAgent-VN</text>
+
+    <rect x="374" y="170" width="238" height="220" rx="26" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
+    <circle cx="416" cy="214" r="24" fill="#10A37F"/><text x="416" y="222" text-anchor="middle" fill="#FFFFFF" font-size="22" font-weight="900">2</text>
+    <text x="444" y="222" fill="#111827" font-size="24" font-weight="900">Install</text>
+    <text x="404" y="270" fill="#475569" font-size="16">Python + Node.js deps</text>
+    <rect x="404" y="304" width="178" height="42" rx="12" fill="#ECFDF5"/><text x="493" y="331" text-anchor="middle" fill="#047857" font-size="15" font-weight="800">pip + npm</text>
+
+    <rect x="668" y="170" width="238" height="220" rx="26" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
+    <circle cx="710" cy="214" r="24" fill="#FAAD14"/><text x="710" y="222" text-anchor="middle" fill="#111827" font-size="22" font-weight="900">3</text>
+    <text x="738" y="222" fill="#111827" font-size="24" font-weight="900">Add data</text>
+    <text x="698" y="270" fill="#475569" font-size="16">SQLite, PDFs, RAG</text>
+    <rect x="698" y="304" width="178" height="42" rx="12" fill="#FEF3C7"/><text x="787" y="331" text-anchor="middle" fill="#92400E" font-size="15" font-weight="800">data/*.db</text>
+
+    <rect x="962" y="170" width="238" height="220" rx="26" fill="#FFFFFF" stroke="#111827" stroke-width="3"/>
+    <circle cx="1004" cy="214" r="24" fill="#3B82F6"/><text x="1004" y="222" text-anchor="middle" fill="#FFFFFF" font-size="22" font-weight="900">4</text>
+    <text x="1032" y="222" fill="#111827" font-size="24" font-weight="900">Run app</text>
+    <text x="992" y="270" fill="#475569" font-size="16">Backend + Next.js UI</text>
+    <rect x="992" y="304" width="178" height="42" rx="12" fill="#EFF6FF"/><text x="1081" y="331" text-anchor="middle" fill="#1D4ED8" font-size="15" font-weight="800">localhost:3001</text>
+  </g>
+
+  <path d="M320 280 H366" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+  <path d="M612 280 H660" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+  <path d="M906 280 H954" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+  <path d="M354 268 L368 280 L354 292" stroke="#111827" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M648 268 L662 280 L648 292" stroke="#111827" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M942 268 L956 280 L942 292" stroke="#111827" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

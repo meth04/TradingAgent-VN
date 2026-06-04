@@ -1,0 +1,56 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">TradingAgent-VN hero banner</title>
+  <desc id="desc">A modern banner for a Vietnamese stock market multi-agent AI hedge fund project.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#07111F"/>
+      <stop offset="0.55" stop-color="#102A43"/>
+      <stop offset="1" stop-color="#0B3D2E"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8D477"/>
+      <stop offset="1" stop-color="#FAAD14"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="640" rx="34" fill="url(#bg)"/>
+  <g opacity="0.18">
+    <path d="M0 520 C180 430 260 570 430 485 C600 400 690 490 820 410 C980 310 1110 380 1280 275" stroke="#7BE7C9" stroke-width="3"/>
+    <path d="M0 420 C140 360 260 470 420 380 C580 290 720 380 880 292 C1020 214 1140 250 1280 160" stroke="#FAAD14" stroke-width="2"/>
+    <path d="M0 140 H1280 M0 240 H1280 M0 340 H1280 M0 440 H1280 M160 0 V640 M320 0 V640 M480 0 V640 M640 0 V640 M800 0 V640 M960 0 V640 M1120 0 V640" stroke="#EAF2FF" stroke-width="1"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="725" y="92" width="430" height="380" rx="26" fill="#F9FAFB"/>
+    <rect x="755" y="126" width="150" height="20" rx="10" fill="#0F172A"/>
+    <rect x="755" y="168" width="360" height="70" rx="18" fill="#ECFDF5" stroke="#10A37F"/>
+    <rect x="755" y="258" width="104" height="150" rx="16" fill="#FFF7ED"/>
+    <rect x="883" y="296" width="104" height="112" rx="16" fill="#EFF6FF"/>
+    <rect x="1011" y="220" width="104" height="188" rx="16" fill="#FEF3C7"/>
+    <path d="M780 355 L835 324 L917 346 L1041 268 L1096 288" stroke="#111827" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="780" cy="355" r="9" fill="#10A37F"/>
+    <circle cx="917" cy="346" r="9" fill="#10A37F"/>
+    <circle cx="1041" cy="268" r="9" fill="#FAAD14"/>
+    <rect x="755" y="430" width="360" height="18" rx="9" fill="#CBD5E1"/>
+  </g>
+  <g>
+    <rect x="76" y="88" width="158" height="36" rx="18" fill="#12263A" stroke="#7BE7C9"/>
+    <text x="155" y="112" text-anchor="middle" fill="#7BE7C9" font-family="Inter, Segoe UI, Arial" font-size="15" font-weight="700">VN30 MULTI-AGENT</text>
+    <text x="74" y="205" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial" font-size="76" font-weight="900" letter-spacing="-3">TradingAgent-VN</text>
+    <text x="78" y="262" fill="#D9EAF7" font-family="Inter, Segoe UI, Arial" font-size="30" font-weight="650">AI Hedge Fund cho thị trường chứng khoán Việt Nam</text>
+    <text x="78" y="316" fill="#B6C8D9" font-family="Inter, Segoe UI, Arial" font-size="22">Crawl dữ liệu • Financial RAG • Multi-Agent Analysis • Backtest • Dashboard</text>
+    <g transform="translate(78 378)">
+      <rect width="164" height="48" rx="14" fill="url(#gold)"/>
+      <text x="82" y="31" text-anchor="middle" fill="#111827" font-family="Inter, Segoe UI, Arial" font-size="16" font-weight="900">Clone &amp; Run</text>
+      <rect x="184" width="196" height="48" rx="14" fill="#0B1220" stroke="#7BE7C9"/>
+      <text x="282" y="31" text-anchor="middle" fill="#7BE7C9" font-family="Inter, Segoe UI, Arial" font-size="16" font-weight="800">Add Your Data</text>
+    </g>
+    <g transform="translate(78 484)" font-family="Inter, Segoe UI, Arial" font-size="17" fill="#EAF2FF">
+      <rect width="560" height="74" rx="20" fill="#0B1220" opacity="0.72"/>
+      <text x="28" y="31" font-weight="800">Agents:</text>
+      <text x="96" y="31">Macro · Technical · Quant · News · Financial · CIO</text>
+      <text x="28" y="55" fill="#9FB6C9">Made for research, thesis demos and reproducible portfolio simulation.</text>
+    </g>
+  </g>
+</svg>
