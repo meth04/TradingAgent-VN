@@ -66,22 +66,10 @@
 
 ## ⚡ Quick start: clone & run
 
-<p align="center">
-  <img src="docs/assets/data-setup.svg" alt="Clone install add data run workflow" width="100%" />
-</p>
-
-### 0) Yêu cầu hệ thống
-
-- **Python**: khuyến nghị Python `3.10` cho workspace chính. `tracking_news` có cấu hình riêng yêu cầu `>=3.11` nếu bạn chạy module đó độc lập.
-- **Node.js**: Node `20+` khuyến nghị cho Next.js 16.
-- **SQLite**: đi kèm Python/Conda; dashboard dùng `better-sqlite3`.
-- **LLM endpoint/API key**: cần cho agent analysis, Financial RAG answer, CIO report. Nếu chỉ crawl dữ liệu hoặc xem dashboard artifact sẵn có thì có thể chưa cần.
-- **GPU**: không bắt buộc. `requirements.txt` pin PyTorch CUDA 11.8; nếu máy không dùng CUDA, bạn có thể cài lại PyTorch CPU theo hướng dẫn chính thức của PyTorch.
-
 ### 1) Clone repo
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git TradingAgent-VN
+git clone https://github.com/meth04/TradingAgent-VN.git TradingAgent-VN
 cd TradingAgent-VN
 ```
 
@@ -115,8 +103,6 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 pip install -r app/backend/requirements.txt
 ```
-
-> Nếu bị lỗi khi cài PyTorch CUDA trên máy không có CUDA, hãy cài bản CPU của PyTorch rồi chạy lại các package còn lại.
 
 ### 3) Cài frontend/dashboard dependencies
 
