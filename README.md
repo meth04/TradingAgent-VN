@@ -98,6 +98,7 @@ NEWS_MODEL=gpt-5.2
 # Paths (có default, chỉ sửa nếu cần)
 DATA_DIR=data
 VNSTOCK_DB_PATH=data/vnstock.db
+VN_MARKET_DATA_DB=data/vn_market_data.db   # cache của vn-market-data
 NEWS_DB_PATH=data/news.db
 BACKTEST_RESULTS_DIR=backtest_results
 WORKDIR=ta_core/rag_storage
@@ -125,7 +126,7 @@ Entrypoint duy nhất là `run.py` (`python run.py --help`).
 
 | Lệnh | Mục đích |
 |---|---|
-| `crawl-vnstock` | Sync/refresh OHLCV vào `data/vnstock.db`. |
+| `crawl-vnstock` | Sync/refresh OHLCV, khối ngoại, chỉ số tài chính vào `data/vnstock.db` (nguồn: vn-market-data — DNSE, Vietcap, CafeF, VNDirect, KBS; miễn phí). |
 | `crawl-news` | Crawl tin tức vào `data/news.db`. |
 | `sync` (alias `prepare`) | Đồng bộ giá + tin + cache báo cáo tài chính một lần. |
 | `analyze` | Sinh báo cáo phân tích tài chính Markdown. |

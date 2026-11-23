@@ -105,6 +105,9 @@ class PathConfig:
     cognitive_db_path: Path = field(
         default_factory=lambda: _resolve_project_path(os.getenv("COGNITIVE_DB_PATH", "data/cognitive.db"))
     )
+    market_data_cache_path: Path = field(
+        default_factory=lambda: _resolve_project_path(os.getenv("VN_MARKET_DATA_DB", "data/vn_market_data.db"))
+    )
     market_db_path: Path = field(
         default_factory=lambda: _resolve_project_path(os.getenv("MARKET_DB_PATH", "data/market.db"))
     )

@@ -18,7 +18,8 @@ faiss-cpu                   # Vector DB (Chuyển sang CPU để chạy ổn đ�
 lightrag-hku                # Financial RAG Engine
 
 # --- 3. Quantitative Finance & Portfolio ---
-vnstock3                    # Vietnam Stock Market Data API cốt lõi
+# Vietnamese market data (cache-first, multi-source, MIT). Pinned to your fork's v0.4.1 commit.
+vn-market-data @ git+https://github.com/huynhleviety-lgtm/vn-market-data@89c8d55054613509b1fd9db7226bcea0b7817c03
 yfinance                    # Global Market Data
 pandas>=2.0.0               # Xử lý ma trận dữ liệu
 numpy>=1.24.0               # Tính toán đại số tuyến tính

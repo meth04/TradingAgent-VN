@@ -1,14 +1,11 @@
-import io
-import subprocess
-import sys
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List
 
 import pandas as pd
-import requests
 
+from ta_core.data import market_data
 from ta_core.database.models import init_db
 from ta_core.database.repo import DataRepository
 
@@ -34,104 +31,6 @@ class MarketCrawler:
             return
         time.sleep(max(60.0 / max_requests_per_minute, 0.0))
 
-    def _fetch_foreign_history_scrape(self, ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
-        """Attempt to scrape historical foreign flow from Vietstock as fallback."""
-        try:
-            url = (
-                "https://finance.vietstock.vn/data/stockforeign"
-                f"?symbol={ticker}&fromDate={start_date}&toDate={end_date}"
-                "&sortBy=tradingDate&sortDir=asc&pageSize=5000&page=1"
-            )
-            headers = {
-                "User-Agent": "Mozilla/5.0",
-                "Referer": "https://finance.vietstock.vn/",
-            }
-            resp = requests.get(url, headers=headers, timeout=20)
-            if resp.status_code != 200:
-                return pd.DataFrame()
-            data = resp.json()
-            items = data.get("data", []) if isinstance(data, dict) else []
-            if not items:
-                return pd.DataFrame()
-            df = pd.DataFrame(items)
-            for col in df.columns:
-                if col.lower() == "tradingdate":
-                    df.rename(columns={col: "date"}, inplace=True)
-                if col.lower() == "buyvolume":
-                    df.rename(columns={col: "buy_foreign"}, inplace=True)
-                if col.lower() == "sellvolume":
-                    df.rename(columns={col: "sell_foreign"}, inplace=True)
-            if "date" in df.columns:
-                df["date"] = pd.to_datetime(df["date"])
-            for c in ["buy_foreign", "sell_foreign"]:
-                if c in df.columns:
-                    df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0)
-            return df[[c for c in df.columns if c in ["date", "buy_foreign", "sell_foreign"]]]
-        except Exception:
-            return pd.DataFrame()
-
-    def _merge_foreign_snapshot(self, df: pd.DataFrame, ticker: str) -> pd.DataFrame:
-        """Merge current-day KBS price_board foreign volumes into df if available."""
-        try:
-            from ta_core.explorer.kbs.trading import Trading
-
-            board = Trading().price_board([ticker], get_all=True)
-            if board.empty:
-                return df
-            row = board.iloc[0]
-            fb = row.get("foreign_buy_volume", 0)
-            fs = row.get("foreign_sell_volume", 0)
-            if df.empty or "date" not in df.columns:
-                return df
-            latest_date = df["date"].max()
-            df.loc[df["date"] == latest_date, "buy_foreign"] = fb
-            df.loc[df["date"] == latest_date, "sell_foreign"] = fs
-            return df
-        except Exception:
-            return df
-
-    def _normalize_columns(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Chuẩn hóa tên cột về định dạng thống nhất cho Database"""
-        # 1. Đưa hết về chữ thường
-        df.columns = [str(c).lower().strip() for c in df.columns]
-        
-        # 2. Map tên cột từ các nguồn khác nhau về chuẩn chung
-        rename_map = {
-            'time': 'date',
-            'tradingdate': 'date',
-            'datetime': 'date',
-            'date_time': 'date',
-            'vol': 'volume',
-            'volume': 'volume',
-            'nm_volume': 'volume', # Khớp lệnh
-            'high': 'high',
-            'low': 'low',
-            'open': 'open',
-            'close': 'close',
-            'buy_foreign_quantity': 'buy_foreign',
-            'sell_foreign_quantity': 'sell_foreign',
-            'foreign_buy': 'buy_foreign',
-            'foreign_sell': 'sell_foreign',
-            'buyvalueforeign': 'buy_foreign',
-            'sellvalueforeign': 'sell_foreign',
-            'fmv': 'buy_foreign',
-            'fms': 'sell_foreign',
-            'buy_foreign_value': 'buy_foreign',
-            'sell_foreign_value': 'sell_foreign',
-            'foreign_buy_volume': 'buy_foreign',
-            'foreign_sell_volume': 'sell_foreign'
-        }
-        
-        df = df.rename(columns=rename_map)
-        
-        # 3. Đảm bảo các cột bắt buộc phải có (nếu thiếu thì fill 0)
-        required_cols = ['buy_foreign', 'sell_foreign', 'volume']
-        for col in required_cols:
-            if col not in df.columns:
-                df[col] = 0
-                
-        return df
-
     def _fetch_from_api(
         self,
         ticker: str,
@@ -140,7 +39,7 @@ class MarketCrawler:
         end_date: str | None = None,
         full_history: bool = False,
     ) -> pd.DataFrame:
-        """Gọi API Vnstock lấy dữ liệu + foreign flow cho window yêu cầu hoặc toàn bộ lịch sử."""
+        """Lấy dữ liệu (qua vn-market-data) + foreign flow cho window yêu cầu hoặc toàn bộ lịch sử."""
         try:
             resolved_end_date = end_date or datetime.now().strftime("%Y-%m-%d")
 
@@ -176,42 +75,6 @@ class MarketCrawler:
             print(f"⚠️ Lỗi API nghiêm trọng khi tải {ticker}: {exc}")
             return pd.DataFrame()
 
-    def _base_external_vnstock_script(
-        self,
-        *,
-        ticker: str,
-        start_date: str | None = None,
-        end_date: str | None = None,
-    ) -> list[str]:
-        script_lines = [
-            "import os",
-            "import site",
-            "import sys",
-            f"ticker = {ticker!r}",
-            f"start_date = {start_date!r}",
-            f"end_date = {end_date!r}",
-            f"project_root = {str(Path(__file__).resolve().parents[2])!r}",
-            "filtered = []",
-            "for path in sys.path:",
-            "    resolved = os.path.abspath(path or '.')",
-            "    if resolved == project_root or resolved.startswith(os.path.join(project_root, 'ta_core')):",
-            "        continue",
-            "    filtered.append(path)",
-            "for package_dir in site.getsitepackages():",
-            "    if package_dir not in filtered:",
-            "        filtered.insert(0, package_dir)",
-            "sys.path = filtered",
-        ]
-        return script_lines
-
-    @staticmethod
-    def _extract_json_array(output: str) -> str:
-        start = output.find("[")
-        end = output.rfind("]")
-        if start == -1 or end == -1 or end < start:
-            return ""
-        return output[start : end + 1]
-
     def _fetch_quote_history(
         self,
         ticker: str,
@@ -220,185 +83,23 @@ class MarketCrawler:
         end_date: str,
         with_foreign_flow: bool,
     ) -> pd.DataFrame:
+        """Daily bars from vn-market-data, already in the shape the DB stores."""
         try:
-            script_lines = self._base_external_vnstock_script(
-                ticker=ticker,
-                start_date=start_date,
-                end_date=end_date,
+            return market_data.get_daily_bars(
+                ticker,
+                start_date,
+                end_date,
+                with_foreign_flow=with_foreign_flow,
             )
-            if with_foreign_flow:
-                script_lines.extend(
-                    [
-                        "from vnstock import Vnstock",
-                        "df = Vnstock().stock(symbol=ticker, source='KBS').quote.history(start=start_date, end=end_date, interval='1D', get_all=True)",
-                    ]
-                )
-            else:
-                script_lines.extend(
-                    [
-                        "from vnstock import Quote",
-                        "df = Quote(symbol=ticker, source='VCI').history(start=start_date, end=end_date, interval='1D')",
-                    ]
-                )
-            script_lines.extend(
-                [
-                    "if df is None or df.empty:",
-                    "    print('[]')",
-                    "else:",
-                    "    print(df.to_json(orient='records', date_format='iso'))",
-                ]
-            )
-            res = subprocess.run([sys.executable, "-c", "\n".join(script_lines)], capture_output=True, text=True)
-            out = self._extract_json_array(res.stdout.strip())
-            if not out:
-                return pd.DataFrame()
-            df = pd.read_json(io.StringIO(out), orient="records")
-            if df is None or df.empty:
-                return pd.DataFrame()
-
-            df = self._normalize_columns(df)
-            if "date" in df.columns:
-                df["date"] = pd.to_datetime(df["date"])
-            numeric_cols = ["open", "high", "low", "close", "volume", "buy_foreign", "sell_foreign"]
-            for column in numeric_cols:
-                if column in df.columns:
-                    df[column] = pd.to_numeric(df[column], errors="coerce").fillna(0)
-            df = df.dropna(subset=["date"])
-            df = df[df["close"] > 0]
-
-            if with_foreign_flow:
-                foreign_df = self._fetch_foreign_history_scrape(
-                    ticker,
-                    start_date,
-                    end_date,
-                )
-                if not foreign_df.empty:
-                    df = df.merge(foreign_df, on="date", how="left", suffixes=("", "_scrape"))
-                    if "buy_foreign_scrape" in df.columns:
-                        df["buy_foreign"] = df["buy_foreign_scrape"].fillna(df["buy_foreign"])
-                        df.drop(columns=["buy_foreign_scrape"], inplace=True)
-                    if "sell_foreign_scrape" in df.columns:
-                        df["sell_foreign"] = df["sell_foreign_scrape"].fillna(df["sell_foreign"])
-                        df.drop(columns=["sell_foreign_scrape"], inplace=True)
-                df = self._merge_foreign_snapshot(df, ticker)
-
-            return df
-        except Exception:
+        except Exception as exc:  # pylint: disable=broad-except
+            print(f"⚠️ Lỗi tải giá {ticker}: {exc}")
             return pd.DataFrame()
-
-    @staticmethod
-    def _quarter_sort_key(quarter: str) -> tuple[int, int]:
-        try:
-            year_str, quarter_str = quarter.split("-Q", maxsplit=1)
-            return int(year_str), int(quarter_str)
-        except (AttributeError, TypeError, ValueError):
-            return (0, 0)
-
-    def _ratio_record_from_rows(
-        self,
-        *,
-        ticker: str,
-        quarter: str,
-        rows: dict[str, dict[str, Any]],
-        previous_rows: dict[str, dict[str, Any]] | None = None,
-    ) -> dict[str, Any]:
-        previous_rows = previous_rows or {}
-        quarter_key = quarter.lower()
-        current_revenue = self.repo._to_ratio_value(rows.get("net_revenue", {}).get(quarter_key))
-        previous_revenue = self.repo._to_ratio_value(previous_rows.get("net_revenue", {}).get(quarter_key))
-        current_profit = self.repo._to_ratio_value(
-            rows.get("profit_after_tax_for_shareholders_of_the_parent_company", {}).get(quarter_key)
-        )
-        previous_profit = self.repo._to_ratio_value(
-            previous_rows.get("profit_after_tax_for_shareholders_of_the_parent_company", {}).get(quarter_key)
-        )
-        liabilities = self.repo._to_ratio_value(rows.get("liabilities", {}).get(quarter_key))
-        owners_equity = self.repo._to_ratio_value(rows.get("owners_equity", {}).get(quarter_key))
-        debt_equity = None
-        if liabilities is not None and owners_equity not in (None, 0):
-            debt_equity = liabilities / owners_equity
-
-        return {
-            "ticker": ticker,
-            "quarter": quarter,
-            "trailing_eps": self.repo._to_ratio_value(rows.get("trailing_eps", {}).get(quarter_key)),
-            "book_value_per_share": self.repo._to_ratio_value(
-                rows.get("book_value_per_share_bvps", {}).get(quarter_key)
-            ),
-            "pe": self.repo._to_ratio_value(rows.get("p_e", {}).get(quarter_key)),
-            "pb": self.repo._to_ratio_value(rows.get("p_b", {}).get(quarter_key)),
-            "beta": self.repo._to_ratio_value(rows.get("beta", {}).get(quarter_key)),
-            "roe": self.repo._to_ratio_value(rows.get("roe", {}).get(quarter_key)),
-            "roa": self.repo._to_ratio_value(rows.get("roa", {}).get(quarter_key)),
-            "debt_equity": debt_equity,
-            "net_revenue": current_revenue,
-            "net_profit": current_profit,
-            "revenue_yoy": self.repo._growth_pct(current_revenue, previous_revenue),
-            "net_profit_yoy": self.repo._growth_pct(current_profit, previous_profit),
-            "updated_at": datetime.now(),
-        }
 
     def _fetch_financial_ratios(self, ticker: str) -> list[dict[str, Any]]:
         try:
-            script_lines = self._base_external_vnstock_script(ticker=ticker)
-            script_lines.extend(
-                [
-                    "from vnstock import Finance",
-                    "df = Finance(symbol=ticker, source='KBS').ratio(period='quarter')",
-                    "if df is None or df.empty:",
-                    "    print('[]')",
-                    "else:",
-                    "    print(df.to_json(orient='records'))",
-                ]
-            )
-            res = subprocess.run([sys.executable, "-c", "\n".join(script_lines)], capture_output=True, text=True)
-            out = self._extract_json_array(res.stdout.strip())
-            if not out:
-                return []
-            df = pd.read_json(io.StringIO(out), orient="records")
-            if df is None or df.empty or "item_id" not in df.columns:
-                return []
-
-            df.columns = [str(col).strip().lower() for col in df.columns]
-            quarter_columns = [
-                col for col in df.columns if isinstance(col, str) and len(col) == 7 and col[4:6] == "-q"
-            ]
-            if not quarter_columns:
-                quarter_columns = [
-                    col
-                    for col in df.columns
-                    if isinstance(col, str) and col.count("-") == 1 and col.lower().startswith(("202", "201"))
-                ]
-            normalized_df = df.copy()
-            normalized_df["item_id"] = normalized_df["item_id"].astype(str).str.strip().str.lower()
-            rows = {
-                str(row["item_id"]): row.to_dict()
-                for _, row in normalized_df.iterrows()
-                if str(row.get("item_id", "")).strip()
-            }
-            quarter_names = sorted({str(col).upper() for col in quarter_columns}, key=self._quarter_sort_key)
-            records: list[dict[str, Any]] = []
-            for quarter in quarter_names:
-                previous_year_key = f"{int(quarter[:4]) - 1}-Q{quarter[-1]}"
-                record = self._ratio_record_from_rows(
-                    ticker=ticker,
-                    quarter=quarter,
-                    rows=rows,
-                    previous_rows=rows,
-                )
-                record["revenue_yoy"] = self.repo._growth_pct(
-                    record["net_revenue"],
-                    self.repo._to_ratio_value(rows.get("net_revenue", {}).get(previous_year_key.lower())),
-                )
-                record["net_profit_yoy"] = self.repo._growth_pct(
-                    record["net_profit"],
-                    self.repo._to_ratio_value(
-                        rows.get("profit_after_tax_for_shareholders_of_the_parent_company", {}).get(previous_year_key.lower())
-                    ),
-                )
-                records.append(record)
-            return records
-        except Exception:
+            return market_data.get_quarterly_ratios(ticker)
+        except Exception as exc:  # pylint: disable=broad-except
+            print(f"⚠️ Lỗi tải chỉ số tài chính {ticker}: {exc}")
             return []
 
     def _sync_financial_ratios(self, ticker: str, *, replace_existing: bool) -> int:
@@ -437,40 +138,10 @@ class MarketCrawler:
 
     def _fetch_symbol_overview(self, ticker: str) -> dict[str, Any]:
         try:
-            script_lines = self._base_external_vnstock_script(ticker=ticker)
-            script_lines.extend(
-                [
-                    "from vnstock import Company",
-                    "df = Company(symbol=ticker, source='VCI').overview()",
-                    "if df is None or df.empty:",
-                    "    print('{}')",
-                    "else:",
-                    "    print(df.iloc[0].to_json())",
-                ]
-            )
-            res = subprocess.run([sys.executable, "-c", "\n".join(script_lines)], capture_output=True, text=True)
-            out = res.stdout.strip()
-            start = out.find("{")
-            end = out.rfind("}")
-            if start == -1 or end == -1 or end < start:
-                return {}
-            payload = pd.read_json(io.StringIO(f"[{out[start:end + 1]}]"), orient="records")
-            if payload.empty:
-                return {}
-            row = payload.iloc[0].to_dict()
-            return {
-                "ticker": ticker,
-                "company_name": row.get("company_profile"),
-                "exchange": "HOSE",
-                "industry": row.get("icb_name2"),
-                "icb_name2": row.get("icb_name2"),
-                "icb_name3": row.get("icb_name3"),
-                "icb_name4": row.get("icb_name4"),
-                "charter_capital": int(float(row["charter_capital"])) if row.get("charter_capital") not in (None, "") else None,
-                "outstanding_shares": int(float(row["issue_share"])) if row.get("issue_share") not in (None, "") else None,
-            }
-        except Exception:
+            overview = market_data.get_company_overview(ticker)
+        except Exception:  # pylint: disable=broad-except
             return {}
+        return {"ticker": ticker, **overview} if overview else {}
 
     def _sync_symbol_metadata(self, ticker: str) -> None:
         metadata = self._fetch_symbol_overview(ticker)
