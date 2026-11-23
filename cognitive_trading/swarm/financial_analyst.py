@@ -6,7 +6,7 @@ from typing import Any, Mapping, Sequence
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.swarm.base_analyst import BaseAnalyst, ToolSpec
-from vnstock.agents.financial_agent import FinancialAgent
+from ta_core.agents.financial_agent import FinancialAgent
 
 _MAX_REPORT_CHARS = 16_000
 

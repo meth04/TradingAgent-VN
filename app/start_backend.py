@@ -34,7 +34,7 @@ def main() -> None:
     # shadow root `config.py`. Import cognitive_trading via package name instead.
     extra_paths = [
         str(root_dir),
-        str(root_dir / "vnstock"),
+        str(root_dir / "ta_core"),
         str(root_dir / "tracking_news"),
         str(backend_dir),
     ]

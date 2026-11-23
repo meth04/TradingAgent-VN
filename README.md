@@ -65,7 +65,7 @@ npm --prefix dashboard install
 # 4. Cấu hình — tạo .env ở root (xem mục Cấu hình)
 
 # 5. Khởi tạo DB + crawl dữ liệu tối thiểu
-python -c "from vnstock.database.models import init_db; init_db()"
+python -c "from ta_core.database.models import init_db; init_db()"
 python run.py crawl-vnstock --tickers FPT,VCB,HPG --replace-existing
 python run.py crawl-news --news-days 2 --source cafef
 ```
@@ -79,8 +79,8 @@ npm --prefix app/frontend run dev  # frontend → http://localhost:3001
 
 > **PYTHONPATH** — nếu gặp `ImportError` khi chạy module con, set:
 > ```bash
-> export PYTHONPATH="$PWD:$PWD/vnstock:$PWD/tracking_news:$PWD/cognitive_trading"
-> # PowerShell: $env:PYTHONPATH = "$PWD;$PWD\vnstock;$PWD\tracking_news;$PWD\cognitive_trading"
+> export PYTHONPATH="$PWD:$PWD/ta_core:$PWD/tracking_news:$PWD/cognitive_trading"
+> # PowerShell: $env:PYTHONPATH = "$PWD;$PWD\ta_core;$PWD\tracking_news;$PWD\cognitive_trading"
 > ```
 
 ## Cấu hình
@@ -100,7 +100,7 @@ DATA_DIR=data
 VNSTOCK_DB_PATH=data/vnstock.db
 NEWS_DB_PATH=data/news.db
 BACKTEST_RESULTS_DIR=backtest_results
-WORKDIR=vnstock/rag_storage
+WORKDIR=ta_core/rag_storage
 ```
 
 <details>
@@ -140,7 +140,7 @@ python run.py crawl-news --news-days 2 --source cafef
 
 # Sync + phân tích
 python run.py sync --tickers FPT,VCB --year 2025 --quarter Q4 --news-days 3
-python run.py analyze --ticker FPT --year 2025 --quarter Q1   # → vnstock/analysis_reports/
+python run.py analyze --ticker FPT --year 2025 --quarter Q1   # → ta_core/analysis_reports/
 
 # Backtest
 python run.py backtest --tickers FPT,HPG,SSI,GAS,VCB --start 2026-03-24 --end 2026-03-25 \
@@ -153,11 +153,11 @@ python run.py backtest-cognitive --tickers VN30 --start 2026-01-05 --end 2026-01
 Trả lời câu hỏi từ báo cáo tài chính (OCR text) theo ticker/năm/quý bằng LightRAG.
 
 ```bash
-# 1. Đặt báo cáo vào vnstock/libs/data/financial_reports/
+# 1. Đặt báo cáo vào ta_core/libs/data/financial_reports/
 #    Đặt tên theo mẫu: FPT-Q4-2025.ocr_text.txt  (kèm FPT-Q4-2025.pdf nếu muốn trace nguồn)
 
 # 2. Index (mặc định khớp pattern *.ocr_text.txt)
-python run.py rag index --input vnstock/libs/data/financial_reports
+python run.py rag index --input ta_core/libs/data/financial_reports
 
 # 3. Query
 python run.py rag query --query "Rủi ro nợ xấu của VCB trong Q4 2025?" \
@@ -190,7 +190,7 @@ Mode truy vấn: `global` (bối cảnh tổng thể) · `local` (entity/chunk g
 |---|---|---|
 | **App realtime** (`app/`) | `python app/start_backend.py` + `npm --prefix app/frontend run dev` | `http://localhost:3001` |
 | **Research/backtest** (`dashboard/`) | `npm --prefix dashboard run dev` | `http://localhost:8000` |
-| **MCP financial server** (tuỳ chọn) | `python -m vnstock.servers.financial_server` | — |
+| **MCP financial server** (tuỳ chọn) | `python -m ta_core.servers.financial_server` | — |
 
 
 </details>
@@ -200,7 +200,7 @@ Mode truy vấn: `global` (bối cảnh tổng thể) · `local` (entity/chunk g
 ```text
 TradingAgent-VN/
 ├── app/                  # FastAPI backend + Next.js realtime frontend (port 3001)
-├── vnstock/              # Core: agents, DB, RAG engine, MCP server, backtest
+├── ta_core/              # Core: agents, DB, RAG engine, MCP server, backtest
 ├── cognitive_trading/    # Planner, swarm, debate, governance, memory, reporting
 ├── tracking_news/        # Crawler tin tức VN + MCP server + Streamlit dashboard
 ├── evaluation_engine/    # Metrics, diagnostics, LLM-as-judge

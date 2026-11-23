@@ -1,10 +1,11 @@
 
 # --- 1. Core Deep Learning (CUDA 11.8) ---
-# Pin CUDA wheels explicitly so Docker/Linux environments get GPU-enabled PyTorch instead of CPU-only builds.
---extra-index-url https://download.pytorch.org/whl/cu118
-torch==2.6.0+cu118
-torchvision==0.21.0+cu118
-torchaudio==2.6.0+cu118
+# Plain PyPI wheels: CPU on Windows/macOS, works everywhere.
+# For an NVIDIA GPU, install the matching CUDA build first, e.g.
+#   pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
 
 # --- 2. AI & Agentic Frameworks (SOTA) ---
 openai>=1.0.0               # Call LLMs (Qwen3 / Gemini via proxy)

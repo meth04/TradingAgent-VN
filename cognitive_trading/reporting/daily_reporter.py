@@ -8,7 +8,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from typing import Any, Mapping, Sequence
 
 from cognitive_trading.config import CognitiveConfig
-from vnstock.core.llm import LLMError, call_llm
+from ta_core.core.llm import LLMError, call_llm
 
 
 def _normalize_markdown_report(text: str) -> str:

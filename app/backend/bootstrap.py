@@ -16,7 +16,7 @@ APP_DATA_DIR.mkdir(parents=True, exist_ok=True)
 (APP_DATA_DIR / "price_cache").mkdir(parents=True, exist_ok=True)
 
 # ---------------------------------------------------------------------------
-# News DB: force both `config.paths.news_db_path` (vnstock/tools/search_tool.py
+# News DB: force both `config.paths.news_db_path` (ta_core/tools/search_tool.py
 # reads this at module import) and `tracking_news.app.config.NEWS_DB_PATH` to
 # point at the app-owned cache. The crawler writes here and SearchToolkit
 # (used by NewsAgent) reads here — so news the user just crawled is what the
@@ -34,7 +34,7 @@ os.environ.setdefault("CAFEF_ONLY_ARTICLE_RATE_LIMIT_SECONDS", "0.0")
 
 # ---------------------------------------------------------------------------
 # Force every model name to gpt-5.2, served by a local proxy.
-# Must run BEFORE config.py and vnstock/core/llm.py are imported, because both
+# Must run BEFORE config.py and ta_core/core/llm.py are imported, because both
 # read these env vars at module-import time.
 # ---------------------------------------------------------------------------
 LLM_MODEL_OVERRIDE = "gpt-5.2"
@@ -43,7 +43,7 @@ LLM_API_KEY = "sk-my-key-is-empty"
 
 os.environ["CLIPROXY_BASE_URL"] = LLM_BASE_URL
 os.environ["CLIPROXY_API_KEY"] = LLM_API_KEY
-# vnstock/core/llm.py reads GPT_MODEL or PRIMARY_MODEL for the default.
+# ta_core/core/llm.py reads GPT_MODEL or PRIMARY_MODEL for the default.
 os.environ["GPT_MODEL"] = LLM_MODEL_OVERRIDE
 os.environ["PRIMARY_MODEL"] = LLM_MODEL_OVERRIDE
 # config.ModelConfig fields (each agent tier).
@@ -64,7 +64,7 @@ for _key in (
 
 # Match run.py path layout (NOT including cognitive_trading itself, since its config
 # shadows the root one). cognitive_trading is imported via the package name.
-for extra in (ROOT, ROOT / "vnstock", ROOT / "tracking_news"):
+for extra in (ROOT, ROOT / "ta_core", ROOT / "tracking_news"):
     extra_str = str(extra)
     if extra_str not in sys.path:
         sys.path.insert(0, extra_str)
@@ -77,7 +77,7 @@ for extra in (ROOT, ROOT / "vnstock", ROOT / "tracking_news"):
 # Technical/Quant keep their CoT.
 # ---------------------------------------------------------------------------
 try:
-    import vnstock.agents.financial_agent as _fa_mod  # noqa: E402
+    import ta_core.agents.financial_agent as _fa_mod  # noqa: E402
 
     _fa_mod.TEXT_COT_PREFIX = ""
 except Exception:
@@ -93,7 +93,7 @@ except Exception:
 # Only widens DB queries — does NOT trigger extra crawl.
 # ---------------------------------------------------------------------------
 try:
-    from vnstock.tools.search_tool import SearchToolkit as _ST  # noqa: E402
+    from ta_core.tools.search_tool import SearchToolkit as _ST  # noqa: E402
 
     _orig_search_news = _ST.search_news
     _orig_search_macro = _ST.search_macro

@@ -12,10 +12,10 @@ from cognitive_trading.memory.episodic_store import EpisodicStore
 import pandas as pd
 import pandas_ta as ta
 
-from vnstock.agents.financial_agent import FinancialAgent
-from vnstock.tools.market_tool import MarketToolkit
-from vnstock.tools.quant_tool import QuantToolkit
-from vnstock.tools.search_tool import SearchToolkit
+from ta_core.agents.financial_agent import FinancialAgent
+from ta_core.tools.market_tool import MarketToolkit
+from ta_core.tools.quant_tool import QuantToolkit
+from ta_core.tools.search_tool import SearchToolkit
 
 
 _FINANCIAL_AGENT = FinancialAgent()

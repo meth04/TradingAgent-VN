@@ -14,8 +14,8 @@ import pandas as pd
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.governance.schemas import AnalysisCard
-from vnstock.agents.prompting import Action, normalize_action
-from vnstock.database.repo import DataRepository
+from ta_core.agents.prompting import Action, normalize_action
+from ta_core.database.repo import DataRepository
 from tracking_news.app.tickers.vn30 import VN30_TICKERS
 
 _HORIZON_TO_COLUMN = {1: "pnl_t1", 3: "pnl_t3", 5: "pnl_t5", 20: "pnl_t20"}

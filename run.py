@@ -29,7 +29,7 @@ except ImportError:
 
 
 ROOT = Path(__file__).resolve().parent
-for extra in (ROOT, ROOT / "vnstock", ROOT / "tracking_news"):
+for extra in (ROOT, ROOT / "ta_core", ROOT / "tracking_news"):
     extra_str = str(extra)
     if extra_str not in sys.path:
         sys.path.insert(0, extra_str)
@@ -38,19 +38,19 @@ for extra in (ROOT, ROOT / "vnstock", ROOT / "tracking_news"):
 try:
     from config import paths
     from cognitive_trading.runner import CognitiveBacktestRunner
-    from vnstock.agents.financial_analysis import (
+    from ta_core.agents.financial_analysis import (
         FinancialAnalysisError,
         generate_financial_report,
     )
-    from vnstock.agents.financial_agent import normalize_financial_quarter
-    from vnstock.core import llm as llm_core
-    from vnstock.database.models import init_db
-    from vnstock.jobs.crawler import MarketCrawler
-    from vnstock.libs.rag_engine.ingest import run_ingest
-    from vnstock.libs.rag_engine.retrieval import query_func
-    from vnstock.tools.backtest.engine import VN30_TICKERS, run_portfolio_backtest, select_workflows
+    from ta_core.agents.financial_agent import normalize_financial_quarter
+    from ta_core.core import llm as llm_core
+    from ta_core.database.models import init_db
+    from ta_core.jobs.crawler import MarketCrawler
+    from ta_core.libs.rag_engine.ingest import run_ingest
+    from ta_core.libs.rag_engine.retrieval import query_func
+    from ta_core.tools.backtest.engine import VN30_TICKERS, run_portfolio_backtest, select_workflows
 except ImportError as exc:  # pragma: no cover - startup guard
-    hint = f"PYTHONPATH={ROOT}:{ROOT / 'vnstock'}:{ROOT / 'cognitive_trading'}"
+    hint = f"PYTHONPATH={os.pathsep.join(str(p) for p in (ROOT, ROOT / 'ta_core', ROOT / 'cognitive_trading'))}"
     print(f"ImportError: {exc}. Try setting {hint}.", file=sys.stderr)
     raise
 
@@ -97,7 +97,7 @@ def _latest_news_date(db_path: Path) -> date | None:
 
 
 def _has_market_data_for_range(ticker: str, start: date, end: date) -> bool:
-    from vnstock.database.repo import DataRepository
+    from ta_core.database.repo import DataRepository
 
     repo = DataRepository()
     try:
@@ -271,7 +271,7 @@ async def handle_rag_index(args: argparse.Namespace) -> None:
 
 def handle_rag_dashboard(args: argparse.Namespace) -> None:
     port = int(getattr(args, "port", 8501))
-    dashboard_path = ROOT / "vnstock" / "libs" / "rag_engine" / "dashboard.py"
+    dashboard_path = ROOT / "ta_core" / "libs" / "rag_engine" / "dashboard.py"
     subprocess.run(
         ["streamlit", "run", str(dashboard_path), "--server.port", str(port)],
         check=True,

@@ -15,9 +15,9 @@ except ImportError:  # pragma: no cover - fallback when dotenv not installed
         return None
 
 
-# Load env from vnstock/.env (fallback to project root)
+# Load env from ta_core/.env (fallback to project root)
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
-_VNSTOCK_ENV = _PROJECT_ROOT / "vnstock" / ".env"
+_VNSTOCK_ENV = _PROJECT_ROOT / "ta_core" / ".env"
 load_dotenv(dotenv_path=_VNSTOCK_ENV)
 if not os.getenv("CLIPROXY_API_KEY"):
     load_dotenv(dotenv_path=_PROJECT_ROOT / ".env")
@@ -57,7 +57,7 @@ async def summarize_for_agent(
     user_content = prompt + "\n" + "\n".join(snippets)
 
     try:
-        from vnstock.core.llm import call_llm
+        from ta_core.core.llm import call_llm
 
         return await call_llm(
             system_prompt="Bạn là trợ lý tài chính.",

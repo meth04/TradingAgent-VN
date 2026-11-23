@@ -9,10 +9,10 @@ from typing import Any
 
 import pandas as pd
 
-from vnstock.database.repo import DataRepository
-from vnstock.tools.market_tool import MarketToolkit
-from vnstock.tools.quant_tool import QuantToolkit
-from vnstock.tools.search_tool import SearchToolkit
+from ta_core.database.repo import DataRepository
+from ta_core.tools.market_tool import MarketToolkit
+from ta_core.tools.quant_tool import QuantToolkit
+from ta_core.tools.search_tool import SearchToolkit
 
 _PRICE_MIN_VND = 1_000.0
 _PRICE_MAX_VND = 5_000_000.0

@@ -11,7 +11,7 @@ from pydantic import ValidationError
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.governance.schemas import AnalysisCard
-from vnstock.core.llm import LLMError, call_llm
+from ta_core.core.llm import LLMError, call_llm
 
 _JSON_FENCE_RE = re.compile(r"```(?:json)?\s*(\{[\s\S]*?\})\s*```", re.IGNORECASE)
 _JSON_OBJECT_RE = re.compile(r"(\{[\s\S]*\})")

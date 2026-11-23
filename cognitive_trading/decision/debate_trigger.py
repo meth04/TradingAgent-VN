@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Sequence
 
 from cognitive_trading.governance.schemas import AnalysisCard
-from vnstock.agents.prompting import Action, normalize_action
+from ta_core.agents.prompting import Action, normalize_action
 
 BUY_FAMILY = {Action.BUY, Action.BUY_MORE}
 SELL_FAMILY = {Action.SELL, Action.TRIMMING}

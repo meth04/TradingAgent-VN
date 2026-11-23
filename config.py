@@ -112,10 +112,10 @@ class PathConfig:
         default_factory=lambda: _resolve_project_path(os.getenv("BACKTEST_RESULTS_DIR", "backtest_results"))
     )
     rag_storage_dir: Path = field(
-        default_factory=lambda: _resolve_project_path(os.getenv("WORKDIR", "vnstock/rag_storage"))
+        default_factory=lambda: _resolve_project_path(os.getenv("WORKDIR", "ta_core/rag_storage"))
     )
     analysis_reports_dir: Path = field(
-        default_factory=lambda: _resolve_project_path(os.getenv("ANALYSIS_REPORTS_DIR", "vnstock/analysis_reports"))
+        default_factory=lambda: _resolve_project_path(os.getenv("ANALYSIS_REPORTS_DIR", "ta_core/analysis_reports"))
     )
 
 

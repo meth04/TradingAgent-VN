@@ -10,8 +10,8 @@ from dataclasses import dataclass
 from typing import Any, Awaitable, Callable, Mapping, Sequence
 
 from cognitive_trading.config import CognitiveConfig
-from vnstock.agents.prompting import Action, BACKTEST_CONTEXT
-from vnstock.core.llm import LLMError, call_llm
+from ta_core.agents.prompting import Action, BACKTEST_CONTEXT
+from ta_core.core.llm import LLMError, call_llm
 
 ToolFunction = Callable[[str], Awaitable[Any] | Any]
 

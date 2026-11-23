@@ -7,12 +7,13 @@ import asyncio
 import json
 import os
 import sys
+import tempfile
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
-from vnstock.tools.backtest.trading_calendar import iter_trading_days, previous_trading_day
+from ta_core.tools.backtest.trading_calendar import iter_trading_days, previous_trading_day
 
 from pydantic import ValidationError
 
@@ -47,16 +48,16 @@ from cognitive_trading.swarm import (
     QuantAnalyst,
     TechnicalAnalyst,
 )
-from vnstock.agents.prompting import Action
-from vnstock.core import llm as llm_core
-from vnstock.core.llm import LLMError
-from vnstock.core.timing import Timer
-from vnstock.database.repo import DataRepository
-from vnstock.tools.backtest.benchmark import BenchmarkAnalyzer
-from vnstock.tools.backtest.portfolio import BUY_FEE_RATE, LOT_SIZE, Portfolio, Position
-from vnstock.tools.market_tool import MarketToolkit
-from vnstock.tools.quant_tool import QuantToolkit
-from vnstock.tools.search_tool import SearchToolkit
+from ta_core.agents.prompting import Action
+from ta_core.core import llm as llm_core
+from ta_core.core.llm import LLMError
+from ta_core.core.timing import Timer
+from ta_core.database.repo import DataRepository
+from ta_core.tools.backtest.benchmark import BenchmarkAnalyzer
+from ta_core.tools.backtest.portfolio import BUY_FEE_RATE, LOT_SIZE, Portfolio, Position
+from ta_core.tools.market_tool import MarketToolkit
+from ta_core.tools.quant_tool import QuantToolkit
+from ta_core.tools.search_tool import SearchToolkit
 
 try:
     from tracking_news.app.summarizer import close_session as news_close_session
@@ -366,7 +367,7 @@ class CognitiveBacktestRunner:
                 risk_report=risk_report,
                 normalized_envelope=normalized_envelope,
             )
-            if str(day_dir).startswith("/tmp/"):
+            if Path(day_dir).resolve().is_relative_to(Path(tempfile.gettempdir()).resolve()):
                 print(f"[{trade_date}] Đã tự chuyển output cognitive sang đường dẫn ghi được: {day_dir}")
             self._persist_episodic_memory(
                 trade_date=trade_date,
@@ -1069,7 +1070,7 @@ class CognitiveBacktestRunner:
             probe_path.write_text("ok", encoding="utf-8")
             probe_path.unlink(missing_ok=True)
         except PermissionError:
-            fallback_root = Path("/tmp") / f"cognitive-backtest-{os.getpid()}"
+            fallback_root = Path(tempfile.gettempdir()) / f"cognitive-backtest-{os.getpid()}"
             self._rebind_output_paths(fallback_root)
             for path in (
                 self.config.output_root,
@@ -1181,8 +1182,8 @@ class CognitiveBacktestRunner:
             return default
 
     def _load_benchmark_data(self, start: str, end: str) -> dict[str, list[float]]:
-        """Load VN30 and VNINDEX benchmark prices from vnstock.db."""
-        from vnstock.tools.backtest.engine import load_benchmark_data
+        """Load VN30 and VNINDEX benchmark prices from ta_core.db."""
+        from ta_core.tools.backtest.engine import load_benchmark_data
 
         benchmark_curves = {}
         for benchmark_name in ("VN30", "VNINDEX"):
@@ -1246,7 +1247,7 @@ class CognitiveBacktestRunner:
 
 
 def _vn30_tickers() -> set[str]:
-    from vnstock.tools.backtest.engine import VN30_TICKERS
+    from ta_core.tools.backtest.engine import VN30_TICKERS
 
     return {ticker.upper() for ticker in VN30_TICKERS}
 

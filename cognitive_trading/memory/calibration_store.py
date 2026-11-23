@@ -9,7 +9,7 @@ from typing import Any, Mapping, Sequence
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.memory.db import CognitiveDB, init_memory_db
-from vnstock.agents.prompting import Action, normalize_action
+from ta_core.agents.prompting import Action, normalize_action
 
 _BUY_ACTIONS = {Action.BUY, Action.BUY_MORE}
 _SELL_ACTIONS = {Action.SELL, Action.TRIMMING}

@@ -8,10 +8,10 @@ from typing import Any, Mapping
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.governance.schemas import IntentTicket, OrderTicket
-from vnstock.agents.prompting import Action
-from vnstock.database.repo import DataRepository
+from ta_core.agents.prompting import Action
+from ta_core.database.repo import DataRepository
 try:
-    from vnstock.engine.risk_engine import RiskEngine, RiskLimits
+    from ta_core.engine.risk_engine import RiskEngine, RiskLimits
 except Exception:  # pragma: no cover - fallback when vnstock risk engine is broken
     @dataclass(frozen=True)
     class RiskLimits:  # type: ignore[no-redef]
@@ -48,7 +48,7 @@ except Exception:  # pragma: no cover - fallback when vnstock risk engine is bro
                         'pnl_pct': round(pnl_pct, 4),
                     })
             return hits
-from vnstock.tools.backtest.portfolio import BUY_FEE_RATE, LOT_SIZE, Portfolio, SELL_FEE_RATE
+from ta_core.tools.backtest.portfolio import BUY_FEE_RATE, LOT_SIZE, Portfolio, SELL_FEE_RATE
 
 
 def infer_sector(ticker: str, repo: DataRepository | None = None) -> str:

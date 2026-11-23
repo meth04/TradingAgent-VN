@@ -6,7 +6,7 @@ from typing import Any, Mapping, Sequence
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.swarm.base_analyst import BaseAnalyst, ToolSpec
-from vnstock.tools.search_tool import SearchToolkit
+from ta_core.tools.search_tool import SearchToolkit
 
 
 class MacroAnalyst(BaseAnalyst):

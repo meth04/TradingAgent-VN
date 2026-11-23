@@ -14,9 +14,9 @@ from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.memory.db import CognitiveDB, init_memory_db
 from cognitive_trading.memory.calibration_store import CalibrationStore
 from cognitive_trading.memory.episodic_store import EpisodicStore
-from vnstock.core.llm import LLMError, call_llm
-from vnstock.database.repo import DataRepository
-from vnstock.tools.backtest.trading_calendar import iter_trading_days
+from ta_core.core.llm import LLMError, call_llm
+from ta_core.database.repo import DataRepository
+from ta_core.tools.backtest.trading_calendar import iter_trading_days
 
 
 def _normalize_date(value: str) -> pd.Timestamp:

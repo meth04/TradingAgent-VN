@@ -195,13 +195,13 @@ def _log(job: _Job, message: str) -> None:
 async def _run_job(job: _Job) -> None:
     """Execute the full pipeline, writing into `job` in place."""
     try:
-        from vnstock.agents.macro_agent import MacroAgent
-        from vnstock.agents.news_agent import NewsAgent
-        from vnstock.agents.technical_agent import TechnicalAgent
-        from vnstock.agents.quant_agent import QuantAgent
-        from vnstock.agents.financial_agent import FinancialAgent
-        from vnstock.tools.backtest.engine import get_latest_financial_quarter
-        from vnstock.core.llm import call_llm
+        from ta_core.agents.macro_agent import MacroAgent
+        from ta_core.agents.news_agent import NewsAgent
+        from ta_core.agents.technical_agent import TechnicalAgent
+        from ta_core.agents.quant_agent import QuantAgent
+        from ta_core.agents.financial_agent import FinancialAgent
+        from ta_core.tools.backtest.engine import get_latest_financial_quarter
+        from ta_core.core.llm import call_llm
         from config import models
     except Exception as exc:  # pragma: no cover
         job.error = f"Không import được vnstock modules: {exc}"
@@ -448,7 +448,7 @@ def _find_latest_cached_quarter(
     """Walk backward until we find a cached financial report .md, fall back
     to (start_year, start_quarter) if nothing is on disk."""
     try:
-        from vnstock.agents.financial_agent import ANALYSIS_ROOT
+        from ta_core.agents.financial_agent import ANALYSIS_ROOT
     except Exception:
         return start_year, start_quarter
     year, q = start_year, start_quarter
@@ -556,7 +556,7 @@ def _build_workflow_inputs(
     job: _Job, portfolio: Dict[str, Any]
 ) -> Tuple[Dict[str, Dict[str, Any]], Dict[str, Any]]:
     """_AgentSlot → {ticker: {agent_name: AgentOutput}} + portfolio snapshot."""
-    from vnstock.workflows.base import AgentOutput
+    from ta_core.workflows.base import AgentOutput
 
     by_ticker: Dict[str, Dict[str, Any]] = {}
     for ticker in job.request.tickers:
@@ -634,11 +634,11 @@ async def _run_workflow_logic(job: _Job, portfolio: Dict[str, Any]) -> bool:
 
     if wf_name in ("traditional", "kelly"):
         if wf_name == "traditional":
-            from vnstock.workflows.traditional_scoring import (
+            from ta_core.workflows.traditional_scoring import (
                 TraditionalScoringWorkflow as WF,
             )
         else:
-            from vnstock.workflows.kelly_criterion import KellyCriterionWorkflow as WF
+            from ta_core.workflows.kelly_criterion import KellyCriterionWorkflow as WF
         async def _run_one(ticker: str) -> None:
             try:
                 # New WF() per ticker — the internal autogen debate keeps state,
@@ -690,7 +690,7 @@ async def _run_workflow_logic(job: _Job, portfolio: Dict[str, Any]) -> bool:
         return False
 
     if wf_name == "markowitz":
-        from vnstock.workflows.markowitz_frontier import MarkowitzFrontierWorkflow
+        from ta_core.workflows.markowitz_frontier import MarkowitzFrontierWorkflow
 
         wf = MarkowitzFrontierWorkflow()
         try:

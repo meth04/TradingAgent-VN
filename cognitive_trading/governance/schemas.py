@@ -7,7 +7,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from vnstock.agents.prompting import Action, normalize_action
+from ta_core.agents.prompting import Action, normalize_action
 
 ORDER_ACTIONS = {Action.BUY, Action.BUY_MORE, Action.SELL, Action.TRIMMING}
 ARTIFACT_VERSION = "1.0"

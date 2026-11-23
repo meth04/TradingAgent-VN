@@ -7,7 +7,7 @@ from typing import Any, Mapping, Sequence
 
 from cognitive_trading.config import CognitiveConfig
 from cognitive_trading.swarm.base_analyst import BaseAnalyst, ToolSpec
-from vnstock.tools.quant_tool import QuantToolkit
+from ta_core.tools.quant_tool import QuantToolkit
 
 
 class TechnicalAnalyst(BaseAnalyst):

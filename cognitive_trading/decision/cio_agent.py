@@ -15,8 +15,8 @@ from cognitive_trading.decision.debate_engine import DebateResult
 from cognitive_trading.decision.debate_trigger import action_direction
 from cognitive_trading.governance.schemas import AnalysisCard, IntentTicket
 from cognitive_trading.memory import CognitiveDB, EpisodicStore, PromotionEngine, StrategyStore
-from vnstock.agents.prompting import Action
-from vnstock.core.llm import LLMError, call_llm
+from ta_core.agents.prompting import Action
+from ta_core.core.llm import LLMError, call_llm
 
 _JSON_FENCE_RE = re.compile(r"```(?:json)?\s*(\{[\s\S]*?\})\s*```", re.IGNORECASE)
 _JSON_OBJECT_RE = re.compile(r"(\{[\s\S]*\})")
